@@ -14,20 +14,7 @@ return [
         ],
     ],
 
-
     'access_token_expire'  => 'P1D',    //1 day in DateInterval format
     'refresh_token_expire' => 'P1M',    // 1 month in DateInterval format
     'auth_code_expire'     => 'PT10M',  // 10 minutes in DateInterval format
-
-    'grants' => [
-//        League\OAuth2\Server\Grant\ClientCredentialsGrant::class => League\OAuth2\Server\Grant\ClientCredentialsGrant::class,
-//        League\OAuth2\Server\Grant\PasswordGrant::class => League\OAuth2\Server\Grant\PasswordGrant::class,
-        League\OAuth2\Server\Grant\AuthCodeGrant::class => League\OAuth2\Server\Grant\AuthCodeGrant::class,
-//        League\OAuth2\Server\Grant\ImplicitGrant::class => League\OAuth2\Server\Grant\ImplicitGrant::class,
-//        League\OAuth2\Server\Grant\RefreshTokenGrant::class => League\OAuth2\Server\Grant\RefreshTokenGrant::class
-    ],
-
-    'event_listeners' => [],
-    'event_listener_providers' => []
-
 ];

@@ -32,11 +32,40 @@ php bin/hyperf.php stru:client
 php bin/hyperf.php stru:keys
 ```
 
-####  config
-```
-//
-```
 #### use
 ```
-//
+// 客户端----laravel控制器效果
+
+protected $url = 'http://192.168.10.1:8000/';           //客户端地址
+protected $remoteUrl = 'http://192.168.10.10:9501/';    //oauth服务器地址
+public function redirect(Request $request){
+    $request->session()->put('state', $state = Str::random(40));
+
+    $query = http_build_query([
+        'client_id' => 1,
+        'redirect_uri' => $this->url.'callback',
+        'response_type' => 'code',
+        'scope' => 'public',
+        'state' => $state,
+    ]);
+
+    return redirect($this->remoteUrl.'oauth/authorize?'.$query);
+}
+
+public function callback(Request $request)
+{
+    $http = new Client();
+
+    $response = $http->post($this->remoteUrl.'oauth/token', [
+        'form_params' => [
+            'grant_type' => 'authorization_code',
+            'client_id' => 1,
+            'client_secret' => 'QI7aUla1qVTVFqYRStqt5D56sR0s0L5HU0NS1YMG',
+            'redirect_uri' => $this->url.'callback',
+            'code' => $request->code,
+        ],
+    ]);
+
+    return \json_decode((string) $response->getBody(), true);
+}
 ```
