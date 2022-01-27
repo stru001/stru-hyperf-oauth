@@ -4,9 +4,10 @@
     "license": "MIT",
     "keywords": [
         "php",
-        "hyperf"
+        "hyperf",
+        "oauth"
     ],
-    "description": "",
+    "description": "Hyerf 下的 oauth2.0-Server 组件",
     "autoload": {
         "psr-4": {
             "Stru\\StruHyperfOauth\\": "src/"
