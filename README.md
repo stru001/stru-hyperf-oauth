@@ -6,8 +6,9 @@ composer require stru/stru-hyperf-oauth
 
 #### tips
 ```
-该组件配合 "stru/stru-hyperf-ui" 使用效果更佳  (提供界面组件，也可自己实现)
-该组件配合 "stru/stru-hyperf-auth" 使用效果更佳 (提供登录验证组件，也可自己实现)
+1. 该组件配合 "stru/stru-hyperf-ui" 组件使用可以免去自己写登录注册页码的麻烦
+2. 该组件 依赖 "stru/stru-hyperf-auth" 组件中的部分功能，因此要使用该组件请务必安装 
+3. 该组件目前只实现了auto_code_grant验证方式，其他方式可自行参考官网实例进行补充
 ```
 
 #### publish
@@ -25,6 +26,8 @@ php bin/hyperf.php migrate
 #### create authCode Client
 ```
 php bin/hyperf.php stru:client
+
+该命令生成auth_code验证方式的客户端，需要手动输入name和回调地址
 ```
 
 #### create rsa key
@@ -34,7 +37,7 @@ php bin/hyperf.php stru:keys
 
 #### use
 ```
-// 客户端----laravel控制器效果
+// 客户端----laravel做客户端代码示例
 
 protected $url = 'http://192.168.10.1:8000/';           //客户端地址
 protected $remoteUrl = 'http://192.168.10.10:9501/';    //oauth服务器地址
