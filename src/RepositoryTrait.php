@@ -11,13 +11,8 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use Psr\Container\ContainerInterface;
 use Stru\StruHyperfOauth\Exception\RuntimeException;
 
-trait RespositoryTrait
+trait RepositoryTrait
 {
-    protected function getUserRespository()
-    {
-
-    }
-
     protected function getScopeRepository(ContainerInterface $container):ScopeRepositoryInterface
     {
         if (! $container->has(ScopeRepositoryInterface::class)) {

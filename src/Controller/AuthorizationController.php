@@ -2,13 +2,16 @@
 
 namespace Stru\StruHyperfOauth\Controller;
 
+use Laminas\Diactoros\Stream;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
-use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\HttpServer\Request;
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Exception\OAuthServerException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Stru\StruHyperfOauth\Entity\UserEntity;
 
 /**
  * Class AuthorizationController
@@ -32,27 +35,44 @@ class AuthorizationController
     /**
      * @RequestMapping(path="authorize",methods="get")
      * @param ServerRequestInterface $psrRequest
-     * @param Request $request
      */
-    public function authorize(
-        ServerRequestInterface $psrRequest,
-        Request $request
-    )
+    public function authorize(ServerRequestInterface $psrRequest)
     {
+        try {
+            // Validate the HTTP request and return an AuthorizationRequest object.
+            // The auth request object can be serialized into a user's session
+            $authRequest = $this->server->validateAuthorizationRequest($psrRequest);
 
-        // 验证请求参数
-        $authRequest = $this->server->validateAuthorizationRequest($psrRequest);
+            // Once the user has logged in set the user on the AuthorizationRequest
+            $authRequest->setUser(new UserEntity());
 
+            // Once the user has approved or denied the client update the status
+            // (true = approved, false = denied)
+            $authRequest->setAuthorizationApproved(true);
 
-        // 通过 Hyperf 方式获取请求参数
-        $clientId = $request->input('client_id','');
-        $redirectUri = $request->input('redirect_uri','');
-        $responseType = $request->input('response_type','');
-        // 权限，暂时不进行实现
-//        $scope = $request->input('scope','');
-        // 防止重放攻击
-        $state = $request->input('state','');
-        // 校验参数
+            // Return the HTTP redirect response
+            return $this->server->completeAuthorizationRequest($authRequest, $this->response);
+        } catch (OAuthServerException $exception) {
+            return $exception->generateHttpResponse($this->response);
+        } catch (\Exception $exception) {
+            $body = new Stream('php://temp', 'r+');
+            $body->write($exception->getMessage());
 
+            return $this->response->withStatus(500)->withBody($body);
+        }
+
+    }
+
+    public function accessToken(ServerRequestInterface $psrRequest)
+    {
+        try {
+            return $this->server->respondToAccessTokenRequest($psrRequest, $this->response);
+        } catch (OAuthServerException $exception) {
+            return $exception->generateHttpResponse($this->response);
+        } catch (\Exception $exception) {
+            $body = new Stream('php://temp', 'r+');
+            $body->write($exception->getMessage());
+
+        }
     }
 }

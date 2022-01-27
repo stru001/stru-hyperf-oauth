@@ -6,34 +6,15 @@ namespace Stru\StruHyperfOauth\Entity;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use Stru\StruHyperfOauth\Model\Client;
 
-class ClientEntity implements ClientEntityInterface
+class ClientEntity extends Client implements ClientEntityInterface
 {
-    use ClientTrait;
+    use ClientTrait,EntityTrait;
 
-    protected $identifier;
-    /**
-     * @var mixed|null
-     */
-    protected $provider;
-
-    public function __construct($identifier,$name,$redirectUri,$isConfidential = false,$provider = null)
+    public function getRedirectUri()
     {
-        $this->setIdentifier((string)$identifier);
-
-        $this->name = $name;
-        $this->isConfidential = $isConfidential;
-        $this->redirectUri = $redirectUri;
-        $this->provider = $provider;
-    }
-
-    public function getIdentifier()
-    {
-        return (string)$this->identifier;
-    }
-
-    public function setIdentifier($identifier)
-    {
-        $this->identifier = $identifier;
+        return $this->redirect;
     }
 }

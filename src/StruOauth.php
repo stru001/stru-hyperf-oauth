@@ -34,7 +34,7 @@ class StruOauth
     public static $clientModel = 'Stru\StruHyperfOauth\Model\Client';
     public static $authCodeModel = 'Stru\StruHyperfOauth\Model\AuthCode';
     public static $personalAccessClientModel = 'Stru\StruHyperfOauth\Model\PersonalAccessClient';
-    public static $tokenModel = 'Stru\StruHyperfOauth\Model\Token';
+    public static $tokenModel = 'Stru\StruHyperfOauth\Model\AccessToken';
     public static $refreshTokenModel = 'Stru\StruHyperfOauth\Model\RefreshToken';
 
     public static $runsMigrations = true;

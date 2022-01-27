@@ -6,16 +6,21 @@ namespace Stru\StruHyperfOauth;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use Stru\StruHyperfOauth\Entity\AccessTokenEntity;
 
 class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
 
-    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
+    public function getNewToken(ClientEntityInterface $clientEntity, array $scops, $userIdentifier = null)
     {
-        // TODO: Implement getNewToken() method.
+        $accessToken = new AccessTokenEntity();
+        $accessToken->setClient($clientEntity);
+        foreach ($scops as $scope){
+            $accessToken->addScope($scope);
+        }
+        $accessToken->setUserIdentifier($userIdentifier);
+        return $accessToken;
     }
 
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)

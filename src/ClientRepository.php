@@ -3,11 +3,15 @@
 
 namespace Stru\StruHyperfOauth;
 
+use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use Stru\StruHyperfOauth\Entity\ClientEntity;
 use Stru\StruHyperfOauth\Exception\RuntimeException;
 use Stru\StruHyperfOauth\Model\Client;
 
-class ClientRepository
+class ClientRepository implements ClientRepositoryInterface
 {
+
+    protected $clients;
 
     public function find($id)
     {
@@ -141,5 +145,38 @@ class ClientRepository
         }
 
         return $string;
+    }
+
+    public function getClientEntity($clientIdentifier)
+    {
+        $entity = new ClientEntity();
+
+        $client = $entity->find($clientIdentifier);
+
+        if ($client){
+            $client->setIdentifier($clientIdentifier);
+        }
+        $this->clients[$clientIdentifier] = [
+            'name' => $client->name,
+            'secret' => $client->secret,
+            'redirect' => $client->redirect,
+            'is_confidential' => false
+        ];
+
+        return $client;
+    }
+
+    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    {
+        // Check if client is registered
+        if (\array_key_exists($clientIdentifier, $this->clients) === false) {
+            return false;
+        }
+        // Check secret is eq
+        if (($clientSecret !== $this->clients[$clientIdentifier]['secret'])) {
+            return false;
+        }
+
+        return true;
     }
 }

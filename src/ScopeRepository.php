@@ -11,27 +11,33 @@ use Stru\StruHyperfOauth\Entity\ScopeEntity;
 
 class ScopeRepository implements ScopeRepositoryInterface
 {
-    public static $scopes = [
-        //
-    ];
-
-    public static function hasScope($id)
-    {
-        return $id === '*' || array_key_exists($id, static::$scopes);
-    }
 
     public function getScopeEntityByIdentifier($identifier)
     {
-        if (self::hasScope($identifier)){
-            return new ScopeEntity($identifier);
+        $scopes = [
+            'public' => [],
+            'read' => [],
+            'write' => []
+        ];
+
+        if (array_key_exists($identifier,$scopes) === false){
+            return false;
         }
+
+        $scope = new ScopeEntity();
+        $scope->setIdentifier($identifier);
+
+        return $scope;
     }
-    // 不进行范围处理
+
     public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null)
     {
-        if ($scopes){
-            return new ScopeEntity($scopes);
+        if ((int) $userIdentifier === 1) {
+            $scope = new ScopeEntity();
+            $scope->setIdentifier('public');
+            $scopes[] = $scope;
         }
-        return new ScopeEntity('*');
+
+        return $scopes;
     }
 }

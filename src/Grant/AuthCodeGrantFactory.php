@@ -7,11 +7,11 @@ namespace Stru\StruHyperfOauth\Grant;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use Psr\Container\ContainerInterface;
 use Stru\StruHyperfOauth\ConfigTrait;
-use Stru\StruHyperfOauth\RespositoryTrait;
+use Stru\StruHyperfOauth\RepositoryTrait;
 
 class AuthCodeGrantFactory
 {
-    use RespositoryTrait,ConfigTrait;
+    use RepositoryTrait,ConfigTrait;
 
     public function __invoke(ContainerInterface $container)
     {
