@@ -6,7 +6,6 @@ use Laminas\Diactoros\Stream;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
-use Hyperf\HttpServer\Request;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ResponseInterface;
@@ -33,7 +32,7 @@ class AuthorizationController
     }
 
     /**
-     * @RequestMapping(path="authorize",methods="get")
+     * @RequestMapping(path="authorize",methods="GET")
      * @param ServerRequestInterface $psrRequest
      */
     public function authorize(ServerRequestInterface $psrRequest)
@@ -63,6 +62,11 @@ class AuthorizationController
 
     }
 
+    /**
+     * @RequestMapping(path="token",methods="POST")
+     * @param ServerRequestInterface $psrRequest
+     * @return ResponseInterface
+     */
     public function accessToken(ServerRequestInterface $psrRequest)
     {
         try {
