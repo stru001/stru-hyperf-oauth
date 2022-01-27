@@ -13,7 +13,7 @@ class Client extends Model
 
     protected $fillable = [];
 
-    protected $hidden = ['secret'];
+    protected $hidden = [];
 
     public function user()
     {
@@ -28,5 +28,23 @@ class Client extends Model
     public function tokens()
     {
         return $this->hasMany(StruOauth::tokenModel(),'client_id');
+    }
+
+    public function setSecretAttribute($value)
+    {
+        $this->plainSecret = $value;
+
+        if (is_null($value) || ! StruOauth::$hashesClientSecrets) {
+            $this->attributes['secret'] = $value;
+
+            return;
+        }
+
+        $this->attributes['secret'] = password_hash($value, PASSWORD_BCRYPT);
+    }
+
+    public function getSecretAttribute()
+    {
+        return $this->plainSecret;
     }
 }

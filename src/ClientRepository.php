@@ -156,11 +156,14 @@ class ClientRepository implements ClientRepositoryInterface
         if ($client){
             $client->setIdentifier($clientIdentifier);
         }
+
+        $attributes = $client->getAttributes();
+
         $this->clients[$clientIdentifier] = [
-            'name' => $client->name,
-            'secret' => $client->secret,
-            'redirect' => $client->redirect,
-            'is_confidential' => false
+            'name' => $attributes['name'],
+            'secret' => $attributes['secret'],
+            'redirect' => $attributes['redirect'],
+            'is_confidential' => true
         ];
 
         return $client;

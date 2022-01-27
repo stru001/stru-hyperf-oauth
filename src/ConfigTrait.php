@@ -10,7 +10,7 @@ use Stru\StruHyperfOauth\Exception\InvalidConfigException;
 trait ConfigTrait
 {
 
-    protected function getPrivateKey(ContainerInterface $container)
+    protected function getPrivateKey()
     {
         $config = config('oauth');
         if (!isset($config['private_key_path']) || empty($config['private_key_path'])){
@@ -21,7 +21,7 @@ trait ConfigTrait
         return $config['private_key_path'];
     }
 
-    protected function getEncryptionKey(ContainerInterface $container)
+    protected function getEncryptionKey()
     {
         $config = config('oauth');
         if (! isset($config['encryption_key']) || empty($config['encryption_key'])) {
@@ -33,7 +33,7 @@ trait ConfigTrait
         return $config['encryption_key'];
     }
 
-    protected function getAccessTokenExpire(ContainerInterface $container)
+    protected function getAccessTokenExpire()
     {
         $config = config('oauth');
         if (! isset($config['access_token_expire'])) {
@@ -61,21 +61,10 @@ trait ConfigTrait
         $config = config('oauth');
         if (! isset($config['auth_code_expire'])){
             throw new InvalidConfigException(
-              "Thie auth_code_expire value is missing in config oauth"
+                "Thie auth_code_expire value is missing in config oauth"
             );
         }
         return $config['auth_code_expire'];
-    }
-
-    protected function getGrantsConfig()
-    {
-        $config = config('oauth');
-        if (empty($config['grants'])){
-            throw new InvalidConfigException(
-                "未配置任何验证、授权方式"
-            );
-        }
-        return $config['grants'];
     }
 
     protected function getListenersConfig()

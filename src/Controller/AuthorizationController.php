@@ -2,6 +2,9 @@
 
 namespace Stru\StruHyperfOauth\Controller;
 
+use Hyperf\HttpServer\Annotation\Middlewares;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Stru\StruHyperfAuth\AuthMiddleware;
 use Laminas\Diactoros\Stream;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -33,6 +36,7 @@ class AuthorizationController
 
     /**
      * @RequestMapping(path="authorize",methods="GET")
+     * @Middlewares({@Middleware(AuthMiddleware::class)})
      * @param ServerRequestInterface $psrRequest
      */
     public function authorize(ServerRequestInterface $psrRequest)

@@ -17,4 +17,9 @@ class ClientEntity extends Client implements ClientEntityInterface
     {
         return $this->redirect;
     }
+
+    public function isConfidential()
+    {
+        return true;
+    }
 }

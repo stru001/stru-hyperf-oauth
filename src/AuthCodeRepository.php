@@ -7,13 +7,14 @@ namespace Stru\StruHyperfOauth;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use Stru\StruHyperfOauth\Entity\AuthCodeEntity;
 
 class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
 
     public function getNewAuthCode()
     {
-        // TODO: Implement getNewAuthCode() method.
+        return new AuthCodeEntity();
     }
 
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
